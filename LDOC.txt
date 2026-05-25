@@ -1,18 +1,17 @@
-My DOC format :
-
 Convention & Specs :
 Name : LDOC
 Description : Tags and properties are heavily focused on alignment, margins, and gizmo-like positioning. Horizontal spacing are based on default 1 character width(or space). Vertical spacing based on default newline height(similar to when when press enter key and the before to the after caret position is the space).
 
 wildcards : "*"
 types : "int", "byte", "boolean", "string", "int4", "byte4", "byte3", "int3","*numeric", "int2", "byte2", "*non-numeric" 
-properties : tag, type, param, embeddable, isstatic, prop, pair, noscope, valueref, endwith
+properties : tag, type, param, embeddable, isstatic, prop, pair, noscope, valueref, load
 
 tag: is the main parent "tag". It has much bigger scopes than "prop"
 prop: is embeddable property.
 
 [valuedef:pageNumber, valuetype="int", linkto="tag-page"]
-[tag:page, type="int", param="title", type="string", valueref="pageNumber", param="author", type="string", embeddable="false", isstatic="false", pair="false"]
+[valuedef:pageNumber, valuetype="int", linkto="tag-page"]
+[tag:page, type="int", param="title", type="string", valueref="pageNumber", valuereftype="int", valueto="number",  valueref="pageAuthor", valuereftype="string", valueto="Author", valueref="pageTitle", valuereftype="string", valueto="Title", param="author", type="string", embeddable="false", isstatic="false", pair="false"]
 [tag:head, type="string", param="margin", type="int4", param="padding", type="int4", embeddable="false", isstatic="true", pair="true"]
 [tag:content, type="string", param="margin", type="int4", param="padding", type="int4", embeddable="false", isstatic="false", pair="true"]
 [tag:tail, type="string", param="margin", type="int4", param="padding", type="int4", embeddable="false", isstatic="true", pair="true"]
@@ -23,12 +22,12 @@ prop: is embeddable property.
 [prop:font-italic, type="boolean", param="i", pair=true, embeddable="true", isstatic="false"]
 [prop:font-strikethrough, type="boolean", param="s", pair=true, embeddable="true", isstatic="false"]
 [prop:font-size, type="int", param="size", pair=true, embeddable="true", isstatic="false"]
-[prop:halign-center, type="int", param="ha-c", pair=true, embeddable="true", isstatic="false"]
-[prop:halign-right, type="int", param="ha-r", pair=true, embeddable="true", isstatic="false"]
-[prop:halign-left, type="int", param="ha-l", pair=true, embeddable="true", isstatic="false"]
-[prop:valign-left, type="int", param="va-l", pair=true, embeddable="true", isstatic="false"]
-[prop:valign-center, type="int", param="va-c", pair=true, embeddable="true", isstatic="false"]
-[prop:valign-right, type="int", param="va-r", pair=true, embeddable="true", isstatic="false"]
+[prop:halign-center, type="int", param="hcenter", pair=true, embeddable="true", isstatic="false"]
+[prop:halign-right, type="int", param="hright", pair=true, embeddable="true", isstatic="false"]
+[prop:halign-left, type="int", param="hleft", pair=true, embeddable="true", isstatic="false"]
+[prop:valign-top, type="int", param="vtop", pair=true, embeddable="true", isstatic="false"]
+[prop:valign-center, type="int", param="vcenter", pair=true, embeddable="true", isstatic="false"]
+[prop:valign-bottom, type="int", param="vbottom", pair=true, embeddable="true", isstatic="false"]
 [prop:image, type="string", param="img", pair=false, embeddable="true", isstatic="false"]
 [prop:row, type="string", param="row", pair="true", embeddable="false", isstatic="false"]
 [prop:cell, type="string", param="cell", pair="true", embeddable="true", isstatic="false"]
@@ -40,16 +39,18 @@ prop: is embeddable property.
 [noscope:margin, type="int4", param="margin", pair="false",  embeddable="true", isstatic="false"]
 [noscope:padding, type="int4", param="pad", pair="false",  embeddable="true", isstatic="false"]
 [noscope:autonum, type="int", param="autonumber", pair="false", isincreasing="true", isdecreasing="true", embeddable="true", isstatic="false"]
+[noscope:getrefint, type="int", param="pad", pair="false",  embeddable="true", isstatic="false"]
+[noscope:getrefstring, type="int", param="pad", pair="false",  embeddable="true", isstatic="false"]
 
 //Below is the full exampleof the specs above.
 
 [page:1, Title="Testing Specs Implementation"]
 [head]Head Acts as Static Template, Will be Shown on Any Other Pages[/head]
 [content][margin=6,6,6,6][padding=2,2,2,2]
-//Page declaration can also includes "content" mbedding like this : [page:1, Title="Testing Specs Implementation", margine="6,6,6,6", pad="2,2,2,2" endwith=content]
+//Page declaration can also includes "content" mbedding like this : [page:1, Title="Testing Specs Implementation", margin="6,6,6,6", pad="2,2,2,2" load=content]
 This is regular text, along with other river of texts
 
-[h2, 0, halign-left] Tag Pairing Header Example.// the "align-left" will align the header to left. opetions are : left, center, right, default is left. "0" mean no extra space/indent.
+[h2, 0, hleft] Tag Pairing Header Example.// the "align-left" will align the header to left. opetions are : left, center, right, default is left. "0" mean no extra space/indent.
 Below is the example dot bullets in practice.[/h2, 2] //the "2" at the end tag will give 2 newlines after the tag
 
 [bd, 1] //the "1" is the space after the bullet. in this example it will give 1 character space width
@@ -59,7 +60,7 @@ this is inline bullet style indent 3 text.
 this is inline bullet style indent 4 text.
 [/bd, 2] //the "2" at the end tag will give 2 newlines after the end tag
 
-[h4, 1, halign-right]
+[h4, 1, hright]
 Below is the example of custom bullet list.
 [/h4, 1]
 [-, 1]this is inline dash style indent text right here. //the "1" is the space after the bullet
@@ -73,7 +74,7 @@ Below is the example of custom bullet list.
 [7] 7 characters worth of empty space
 [8] 8 characters worth of empty space
 
-[h2, 0, halign-center] //OR can be written using the param like this [h2, 0, ha-c]
+[h2, 0, hcenter] //OR can be written using the param like this [h2, 0, ha-c]
 Image Embedding Example 
 [/h2, 2]
 
@@ -84,7 +85,7 @@ img[path/to/the/file.someExtension", caption="image test", embedd="click this"]
 
 Table example as shown below :
 
-[h2, 0, halign-left]Data Summary Table[/h2, 2]
+[h2, 0, hleft]Data Summary Table[/h2, 2]
 
 [table, rows="3", cols="2"]
     [row]
@@ -108,5 +109,5 @@ Table example as shown below :
 [/table]
 [/content]
 
-[tail]Tail Acts as Static Template, Will be Shown on Any Other Pages[/tail]
+[tail]Tail Acts as Static Template, Will be Shown on Any Other Pages. PAGENUMBER[getrefint=pageNumber][/tail]
 
