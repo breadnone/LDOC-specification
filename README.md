@@ -1,5 +1,5 @@
 # LDOC-specification
-```txt
+```cs
 Description : Tags and properties are heavily focused on alignment, margins, and gizmo-like positioning. Horizontal spacing are based on default 1 character width(or space). Vertical spacing based on default newline height(similar to when when press enter key and the before to the after caret position is the space).
 
 wildcards : "*"
